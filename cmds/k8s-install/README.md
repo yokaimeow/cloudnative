@@ -29,7 +29,7 @@ localAPIEndpoint:
 nodeRegistration:
   criSocket: unix:///var/run/containerd/containerd.sock
   imagePullPolicy: IfNotPresent
-  name: k8s-master1.sodacoco.com #master node name
+  name: k8s-master1.doki.life #master node name
   taints: null
 ---
 apiServer:
@@ -45,7 +45,7 @@ etcd:
 imageRepository: registry.k8s.io
 kind: ClusterConfiguration
 kubernetesVersion: 1.26.0
-controlPlaneEndpoint: apiserver.sodacoco.com:8443 #apiserver
+controlPlaneEndpoint: apiserver.doki.life:8443 #apiserver
 networking:
   dnsDomain: cluster.local
   serviceSubnet: 10.96.0.0/12
