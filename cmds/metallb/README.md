@@ -22,3 +22,7 @@ $ kubectl get configmap -n kube-system kube-proxy -o yaml | grep strictARP
 ```
 
 修改 kube-proxy 中的 strictARP 配置后进行安装
+
+### 参考
+
+- [负载均衡器之MatelLB](https://tinychen.com/20220519-k8s-06-loadbalancer-metallb/)
