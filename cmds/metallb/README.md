@@ -21,7 +21,4 @@ $ kubectl get configmap -n kube-system kube-proxy -o yaml | grep strictARP
       strictARP: true
 ```
 
-提前准备好configmap的配置，github上面有提供一个参考文件，layer2模式需要的配置并不多，这里我们只做最基础的一些参数配置定义即可：
-
-protocol这一项我们配置为layer2
-addresses这里我们可以使用CIDR来批量配置（198.51.100.0/24），也可以指定首尾IP来配置（192.168.0.150-192.168.0.200），这里我们指定一段和k8s节点在同一个子网的IP
+修改 kube-proxy 中的 strictARP 配置后进行安装
