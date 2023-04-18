@@ -291,7 +291,7 @@ alertmanager:
     ## Secret must be manually created in the namespace
     ##
     tls: 
-      - secretName: alertmanager-letsencrypt-tls
+      - secretName: alertmanager-general-tls
         hosts:
         - alertmanager.doki.life
 
@@ -421,6 +421,10 @@ alertmanager:
     ##
     interval: ""
     selfMonitor: true
+
+    ## Additional labels
+    ##
+    additionalLabels: {}
 
     ## SampleLimit defines per-scrape limit on number of scraped samples that will be accepted.
     ##
@@ -750,7 +754,7 @@ alertmanager:
 ## Using default values from https://github.com/grafana/helm-charts/blob/main/charts/grafana/values.yaml
 ##
 grafana:
-  enabled: true
+  enabled: false
   namespaceOverride: ""
 
   ## ForceDeployDatasources Create datasource configmap even if grafana deployment has been disabled
@@ -792,7 +796,6 @@ grafana:
     annotations: 
       kubernetes.io/ingress.class: nginx
       cert-manager.io/cluster-issuer: "letsencrypt-dns01"
-      # kubernetes.io/tls-acme: "true"
 
     ## Labels to be added to the Ingress
     ##
@@ -803,7 +806,7 @@ grafana:
     ##
     hosts:
       - grafana.doki.life
-    #hosts: []
+    # hosts: []
 
     ## Path for grafana ingress
     path: /
@@ -812,7 +815,7 @@ grafana:
     ## Secret must be manually created in the namespace
     ##
     tls: 
-      - secretName: dokilife-letsencrypt-tls
+      - secretName: grafana-general-tls
         hosts:
         - grafana.doki.life
 
@@ -2293,6 +2296,10 @@ prometheus:
     enabled: false
     interval: ""
 
+    ## Additional labels
+    ##
+    additionalLabels: {}
+
     ## scheme: HTTP scheme to use for scraping. Can be used with `tlsConfig` for example if using istio mTLS.
     scheme: ""
 
@@ -2501,7 +2508,7 @@ prometheus:
     ##
     hosts:
       - prometheus.doki.life
-    #hosts: []
+    # hosts: []
 
     ## Paths to use for ingress rules - one path should match the prometheusSpec.routePrefix
     ##
@@ -2516,7 +2523,7 @@ prometheus:
     ## Secret must be manually created in the namespace
     ##
     tls: 
-      - secretName: prometheus-letsencrypt-tls
+      - secretName: prometheus-general-tls
         hosts:
           - prometheus.doki.life
 
@@ -2576,6 +2583,10 @@ prometheus:
     ##
     interval: ""
     selfMonitor: true
+
+    ## Additional labels
+    ##
+    additionalLabels: {}
 
     ## SampleLimit defines per-scrape limit on number of scraped samples that will be accepted.
     ##
@@ -2773,11 +2784,12 @@ prometheus:
     ##
     query: {}
 
-    ## Namespaces to be selected for PrometheusRules discovery.
-    ## If nil, select own namespace. Namespaces to be selected for ServiceMonitor discovery.
-    ## See https://github.com/prometheus-operator/prometheus-operator/blob/main/Documentation/api.md#namespaceselector for usage
-    ##
+    ## If nil, select own namespace. Namespaces to be selected for PrometheusRules discovery.
     ruleNamespaceSelector: {}
+    ## Example which selects PrometheusRules in namespaces with label "prometheus" set to "somelabel"
+    # ruleNamespaceSelector:
+    #   matchLabels:
+    #     prometheus: somelabel
 
     ## If true, a nil or {} value for prometheus.prometheusSpec.ruleSelector will cause the
     ## prometheus resource to be created with selectors based on values in the helm deployment,
@@ -2842,10 +2854,12 @@ prometheus:
     #   matchLabels:
     #     prometheus: somelabel
 
-    ## Namespaces to be selected for PodMonitor discovery.
-    ## See https://github.com/prometheus-operator/prometheus-operator/blob/main/Documentation/api.md#namespaceselector for usage
-    ##
+    ## If nil, select own namespace. Namespaces to be selected for PodMonitor discovery.
     podMonitorNamespaceSelector: {}
+    ## Example which selects PodMonitor in namespaces with label "prometheus" set to "somelabel"
+    # podMonitorNamespaceSelector:
+    #   matchLabels:
+    #     prometheus: somelabel
 
     ## If true, a nil or {} value for prometheus.prometheusSpec.probeSelector will cause the
     ## prometheus resource to be created with selectors based on values in the helm deployment,
@@ -2862,10 +2876,12 @@ prometheus:
     #   matchLabels:
     #     prometheus: somelabel
 
-    ## Namespaces to be selected for Probe discovery.
-    ## See https://github.com/prometheus-operator/prometheus-operator/blob/main/Documentation/api.md#namespaceselector for usage
-    ##
+    ## If nil, select own namespace. Namespaces to be selected for Probe discovery.
     probeNamespaceSelector: {}
+    ## Example which selects Probe in namespaces with label "prometheus" set to "somelabel"
+    # probeNamespaceSelector:
+    #   matchLabels:
+    #     prometheus: somelabel
 
     ## How long to retain metrics
     ##
@@ -2874,6 +2890,11 @@ prometheus:
     ## Maximum size of metrics
     ##
     retentionSize: ""
+
+    ## Allow out-of-order/out-of-bounds samples ingested into Prometheus for a specified duration
+    ## See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#tsdb
+    tsdb:
+      outOfOrderTimeWindow: 0s
 
     ## Enable compression of the write-ahead log using Snappy.
     ##
@@ -3488,6 +3509,10 @@ thanosRuler:
     ##
     interval: ""
     selfMonitor: true
+
+    ## Additional labels
+    ##
+    additionalLabels: {}
 
     ## SampleLimit defines per-scrape limit on number of scraped samples that will be accepted.
     ##
