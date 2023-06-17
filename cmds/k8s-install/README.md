@@ -44,7 +44,7 @@ etcd:
     dataDir: /var/lib/etcd
 imageRepository: registry.k8s.io
 kind: ClusterConfiguration
-kubernetesVersion: 1.26.0
+kubernetesVersion: 1.27.3
 controlPlaneEndpoint: apiserver.doki.life:8443 #apiserver
 networking:
   dnsDomain: cluster.local
