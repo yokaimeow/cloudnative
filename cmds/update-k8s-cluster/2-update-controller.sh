@@ -4,7 +4,7 @@
 
 kubeadm upgrade plan
 
-kubeadm upgrade apply v1.27.2
+kubeadm upgrade apply v1.27.3
 
 #other controler node exec
 kubeadm upgrade node
@@ -12,7 +12,7 @@ kubeadm upgrade node
 kubectl get nodes -o wide
 
 # 一台一台来操作
-VERSION="1.27.2"
+VERSION="1.27.3"
 
 kubectl drain k8s-master1.doki.life --ignore-daemonsets
 
@@ -30,7 +30,7 @@ kubectl get nodes -o wide
 
 # ---
 
-VERSION="1.27.2"
+VERSION="1.27.3"
 
 kubectl drain k8s-master2.doki.life --ignore-daemonsets
 
@@ -48,7 +48,7 @@ kubectl get nodes -o wide
 
 # ---
 
-VERSION="1.27.2"
+VERSION="1.27.3"
 
 kubectl drain k8s-master3.doki.life --ignore-daemonsets
 

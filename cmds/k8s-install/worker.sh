@@ -68,7 +68,7 @@ sysctl --system
 
 wget https://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo -O /etc/yum.repos.d/docker-ce.repo
 
-yum install -y containerd.io-1.6.14-3.1.el9.x86_64
+yum install -y containerd.io-1.6.21-3.1.el9.x86_64
 
 mkdir -p /etc/containerd
 containerd config default | sudo tee /etc/containerd/config.toml
@@ -89,7 +89,7 @@ enabled=1
 gpgcheck=0
 EOF
 
-yum -y install kubeadm-1.26.0-0 kubelet-1.26.0-0 kubectl-1.26.0-0
+yum -y install kubeadm-1.27.3-0 kubelet-1.27.3-0 kubectl-1.27.3-0
 
 systemctl enable --now kubelet
 
