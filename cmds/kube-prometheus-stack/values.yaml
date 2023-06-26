@@ -323,10 +323,9 @@ alertmanager:
 
     # For Kubernetes >= 1.18 you should specify the ingress-controller via the field ingressClassName
     # See https://kubernetes.io/blog/2020/04/02/improvements-to-the-ingress-api-in-kubernetes-1.18/#specifying-the-class-of-an-ingress
-    # ingressClassName: nginx
+    ingressClassName: nginx
 
-    annotations: 
-      kubernetes.io/ingress.class: "nginx"
+    annotations:
       cert-manager.io/cluster-issuer: "letsencrypt-dns01"
 
     labels: {}
@@ -339,12 +338,12 @@ alertmanager:
 
     ## Hosts must be provided if Ingress is enabled.
     ##
-    hosts: 
+    hosts:
       - alertmanager.doki.life
 
     ## Paths to use for ingress rules - one path should match the alertmanagerSpec.routePrefix
     ##
-    paths: 
+    paths:
       - /
 
     ## For Kubernetes >= 1.18 you should specify the pathType (determines how Ingress paths should be matched)
@@ -354,7 +353,7 @@ alertmanager:
     ## TLS configuration for Alertmanager Ingress
     ## Secret must be manually created in the namespace
     ##
-    tls: 
+    tls:
       - secretName: alertmanager-general-tls
         hosts:
         - alertmanager.doki.life
@@ -908,12 +907,12 @@ grafana:
     ## IngressClassName for Grafana Ingress.
     ## Should be provided if Ingress is enable.
     ##
-    # ingressClassName: nginx
+    ingressClassName: nginx
 
     ## Annotations for Grafana Ingress
     ##
-    annotations: 
-      kubernetes.io/ingress.class: nginx
+    annotations:
+      # kubernetes.io/ingress.class: nginx
       cert-manager.io/cluster-issuer: "letsencrypt-dns01"
 
     ## Labels to be added to the Ingress
@@ -933,7 +932,7 @@ grafana:
     ## TLS configuration for grafana Ingress
     ## Secret must be manually created in the namespace
     ##
-    tls: 
+    tls:
       - secretName: grafana-general-tls
         hosts:
         - grafana.doki.life
@@ -2684,10 +2683,9 @@ prometheus:
 
     # For Kubernetes >= 1.18 you should specify the ingress-controller via the field ingressClassName
     # See https://kubernetes.io/blog/2020/04/02/improvements-to-the-ingress-api-in-kubernetes-1.18/#specifying-the-class-of-an-ingress
-    # ingressClassName: nginx
+    ingressClassName: nginx
 
-    annotations: 
-      kubernetes.io/ingress.class: "nginx"
+    annotations:
       cert-manager.io/cluster-issuer: "letsencrypt-dns01"
     labels: {}
 
@@ -2713,7 +2711,7 @@ prometheus:
     ## TLS configuration for Prometheus Ingress
     ## Secret must be manually created in the namespace
     ##
-    tls: 
+    tls:
       - secretName: prometheus-general-tls
         hosts:
           - prometheus.doki.life
