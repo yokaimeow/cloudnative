@@ -10,7 +10,7 @@ nameOverride: ""
 ##
 namespaceOverride: ""
 
-## Provide a k8s version to auto dashboard import script example: kubeTargetVersionOverride: 1.16.6
+## Provide a k8s version to auto dashboard import script example: kubeTargetVersionOverride: 1.26.6
 ##
 kubeTargetVersionOverride: ""
 
@@ -201,10 +201,30 @@ global:
   # - "image-pull-secret"
 
 windowsMonitoring:
-  ## Deploys the windows-exporter and Windows-specific dashboards and rules
+  ## Deploys the windows-exporter and Windows-specific dashboards and rules (job name must be 'windows-exporter')
   enabled: false
-  ## Job must match jobLabel in the PodMonitor/ServiceMonitor and is used for the rules
-  job: prometheus-windows-exporter
+
+## Configuration for prometheus-windows-exporter
+## ref: https://github.com/prometheus-community/helm-charts/tree/main/charts/prometheus-windows-exporter
+##
+prometheus-windows-exporter:
+  ## Enable ServiceMonitor and set Kubernetes label to use as a job label
+  ##
+  prometheus:
+    monitor:
+      enabled: true
+      jobLabel: jobLabel
+
+  ## Set job label to 'windows-exporter' as required by the default Prometheus rules and Grafana dashboards
+  ##
+  podLabels:
+    jobLabel: windows-exporter
+
+  ## Enable memory and container metrics as required by the default Prometheus rules and Grafana dashboards
+  ##
+  config: |-
+    collectors:
+      enabled: '[defaults],memory,container'
 
 ## Configuration for alertmanager
 ## ref: https://prometheus.io/docs/alerting/alertmanager/
@@ -681,8 +701,6 @@ alertmanager:
           resources:
             requests:
               storage: 50Gi
-    #     selector: {}
-
 
     ## The external URL the Alertmanager instances will be available under. This is necessary to generate correct URLs. This is necessary if Alertmanager is not served from root of a DNS name. string  false
     ##
@@ -924,7 +942,6 @@ grafana:
     ## Annotations for Grafana Ingress
     ##
     annotations:
-      # kubernetes.io/ingress.class: nginx
       cert-manager.io/cluster-issuer: "letsencrypt-dns01"
 
     ## Labels to be added to the Ingress
@@ -1160,6 +1177,11 @@ kubelet:
   namespace: kube-system
 
   serviceMonitor:
+    ## Attach metadata to discovered targets. Requires Prometheus v2.45 for endpoints created by the operator.
+    ##
+    attachMetadata:
+      node: false
+
     ## Scrape interval. If not set, the Prometheus default scrape interval is used.
     ##
     interval: ""
@@ -1911,6 +1933,11 @@ kube-state-metrics:
 ##
 nodeExporter:
   enabled: true
+  operatingSystems:
+    linux:
+      enabled: true
+    darwin:
+      enabled: true
 
 ## Configuration for prometheus-node-exporter subchart
 ##
@@ -2402,20 +2429,20 @@ prometheusOperator:
     enableProbe: false
 
     # resource config for prometheusConfigReloader
-    resources:
-      requests:
-        cpu: 200m
-        memory: 50Mi
-      limits:
-        cpu: 200m
-        memory: 50Mi
+    resources: {}
+      # requests:
+      #   cpu: 200m
+      #   memory: 50Mi
+      # limits:
+      #   cpu: 200m
+      #   memory: 50Mi
 
   ## Thanos side-car image when configured
   ##
   thanosImage:
     registry: quay.io
     repository: thanos/thanos
-    tag: v0.32.1
+    tag: v0.32.3
     sha: ""
 
   ## Set a Label Selector to filter watched prometheus and prometheusAgent
@@ -2737,7 +2764,7 @@ prometheus:
 
     ## Paths to use for ingress rules - one path should match the prometheusSpec.routePrefix
     ##
-    paths: 
+    paths:
       - /
 
     ## For Kubernetes >= 1.18 you should specify the pathType (determines how Ingress paths should be matched)
@@ -2925,7 +2952,7 @@ prometheus:
     image:
       registry: quay.io
       repository: prometheus/prometheus
-      tag: v2.46.0
+      tag: v2.47.1
       sha: ""
 
     ## Tolerations for use with node taints
@@ -3241,7 +3268,7 @@ prometheus:
     ## Prometheus StorageSpec for persistent data
     ## ref: https://github.com/prometheus-operator/prometheus-operator/blob/main/Documentation/user-guides/storage.md
     ##
-    storageSpec: 
+    storageSpec:
     ## Using PersistentVolumeClaim
     ##
       volumeClaimTemplate:
@@ -3251,7 +3278,6 @@ prometheus:
           resources:
             requests:
               storage: 50Gi
-    #    selector: {}
 
     ## Using tmpfs volume
     ##
@@ -3856,7 +3882,7 @@ thanosRuler:
     image:
       registry: quay.io
       repository: thanos/thanos
-      tag: v0.32.1
+      tag: v0.32.3
       sha: ""
 
     ## Namespaces to be selected for PrometheusRules discovery.
