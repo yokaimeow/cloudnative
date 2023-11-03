@@ -1077,8 +1077,8 @@ dex:
     # -- Number of seconds after which the [probe] times out
     timeoutSeconds: 1
     
-    # -- terminationGracePeriodSeconds for container lifecycle hook
-    terminationGracePeriodSeconds: 30
+  # -- terminationGracePeriodSeconds for container lifecycle hook
+  terminationGracePeriodSeconds: 30
 
   serviceAccount:
     # -- Create dex service account
