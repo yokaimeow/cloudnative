@@ -7,7 +7,7 @@ systemctl stop firewalld && systemctl disable firewalld
 cat >> /etc/hosts << EOF
 192.168.50.200 apiserver.doki.life
 192.168.50.151 k8s-master1.doki.life
-192.168.50.152 k8a-master2.doki.life
+192.168.50.152 k8s-master2.doki.life
 192.168.50.153 k8s-master3.doki.life
 192.168.50.161 k8s-node1.doki.life
 192.168.50.162 k8s-node2.doki.life
