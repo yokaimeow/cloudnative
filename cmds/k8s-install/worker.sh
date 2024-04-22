@@ -68,7 +68,7 @@ sysctl --system
 
 wget https://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo -O /etc/yum.repos.d/docker-ce.repo
 
-yum install -y containerd.io-1.6.21-3.1.el9.x86_64
+yum install -y containerd.io
 
 mkdir -p /etc/containerd
 containerd config default | sudo tee /etc/containerd/config.toml
@@ -81,15 +81,17 @@ systemctl daemon-reload
 systemctl enable containerd --now
 
 #3、Kubernetes部署
-cat > /etc/yum.repos.d/kubernetes.repo <<EOF
+cat <<EOF | sudo tee /etc/yum.repos.d/kubernetes.repo
 [kubernetes]
 name=Kubernetes
-baseurl=https://mirrors.aliyun.com/kubernetes/yum/repos/kubernetes-el7-x86_64/
+baseurl=https://pkgs.k8s.io/core:/stable:/v1.30/rpm/
 enabled=1
-gpgcheck=0
+gpgcheck=1
+gpgkey=https://pkgs.k8s.io/core:/stable:/v1.30/rpm/repodata/repomd.xml.key
+exclude=kubelet kubeadm kubectl cri-tools kubernetes-cni
 EOF
 
-yum -y install kubeadm-1.27.3-0 kubelet-1.27.3-0 kubectl-1.27.3-0
+yum -y install kubeadm kubelet kubectl --disableexcludes=kubernetes
 
 systemctl enable --now kubelet
 
