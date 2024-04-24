@@ -1,0 +1,23 @@
+global:
+  ## https://docs.gitlab.com/charts/charts/globals#configure-host-settings
+  hosts:
+    domain: doki.life
+    externalIP: 192.168.50.181
+
+  ## https://docs.gitlab.com/charts/charts/globals#configure-ingress-settings
+  ingress:
+    configureCertmanager: false
+    tls:
+      secretName: gitlab-tls
+
+## Installation & configuration of jetstack/cert-manager
+## See requirements.yaml for current version
+certmanager:
+  installCRDs: false
+  install: false
+
+## Installation & configuration of stable/prostgresql
+## See requirements.yaml for current version
+postgresql:
+  image:
+    tag: 16.2.0
