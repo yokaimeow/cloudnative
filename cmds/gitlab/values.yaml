@@ -21,3 +21,8 @@ certmanager:
 postgresql:
   image:
     tag: 16.2.0
+
+nginx-ingress:
+  controller:
+    service:
+      externalTrafficPolicy: "Cluster"
