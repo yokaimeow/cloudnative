@@ -4,7 +4,7 @@
 
 kubeadm upgrade plan
 
-kubeadm upgrade apply v1.28.1
+kubeadm upgrade apply v1.30.2
 
 #other controler node exec
 kubeadm upgrade node
@@ -12,11 +12,11 @@ kubeadm upgrade node
 kubectl get nodes -o wide
 
 # 一台一台来操作
-VERSION="1.28.1"
+VERSION="1.30.2"
 
 kubectl drain k8s-master1.doki.life --ignore-daemonsets
 
-yum install -y kubelet-$VERSION-0 kubectl-$VERSION-0 --disableexcludes=kubernetes
+yum install -y kubelet-$VERSION kubectl-$VERSION --disableexcludes=kubernetes
 
 systemctl daemon-reload
 
@@ -30,11 +30,11 @@ kubectl get nodes -o wide
 
 # ---
 
-VERSION="1.28.1"
+VERSION="1.30.2"
 
 kubectl drain k8s-master2.doki.life --ignore-daemonsets
 
-yum install -y kubelet-$VERSION-0 kubectl-$VERSION-0 --disableexcludes=kubernetes
+yum install -y kubelet-$VERSION kubectl-$VERSION --disableexcludes=kubernetes
 
 systemctl daemon-reload
 
@@ -48,11 +48,11 @@ kubectl get nodes -o wide
 
 # ---
 
-VERSION="1.28.1"
+VERSION="1.30.2"
 
 kubectl drain k8s-master3.doki.life --ignore-daemonsets
 
-yum install -y kubelet-$VERSION-0 kubectl-$VERSION-0 --disableexcludes=kubernetes
+yum install -y kubelet-$VERSION kubectl-$VERSION --disableexcludes=kubernetes
 
 systemctl daemon-reload
 
