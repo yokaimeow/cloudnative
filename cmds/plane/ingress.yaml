@@ -1,0 +1,86 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: plane-web
+  namespace: plane
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    ingress.kubernetes.io/proxy-body-size: "0"
+    nginx.ingress.kubernetes.io/proxy-body-size: "0"
+    cert-manager.io/cluster-issuer: "letsencrypt-dns01"
+spec:
+  tls:
+  - hosts:
+    - plane.doki.life        # 替换为您的域名。
+    secretName:  plane-web-tls
+  rules:
+  - host: plane.doki.life    # 替换为您的域名。
+    http:
+      paths:
+      - path: /
+        backend:
+          service:
+            name: plane-web  # 替换为您的后端服务名。
+            port:
+              number: 3000  # 替换为您的服务端口。
+        pathType: Prefix
+      - path: /spaces/
+        backend:
+          service:
+            name: plane-space  # 替换为您的后端服务名。
+            port:
+              number: 3000  # 替换为您的服务端口。
+        pathType: Prefix
+      - path: /god-mode/
+        backend:
+          service:
+            name: plane-admin  # 替换为您的后端服务名。
+            port:
+              number: 3000  # 替换为您的服务端口。
+        pathType: Prefix
+      - path: /api/
+        backend:
+          service:
+            name: plane-api  # 替换为您的后端服务名。
+            port:
+              number: 8000  # 替换为您的服务端口。
+        pathType: Prefix
+      - path: /auth/
+        backend:
+          service:
+            name: plane-api  # 替换为您的后端服务名。
+            port:
+              number: 8000  # 替换为您的服务端口。
+        pathType: Prefix
+      - path: /uploads/
+        backend:
+          service:
+            name: plane-minio  # 替换为您的后端服务名。
+            port:
+              number: 9000  # 替换为您的服务端口。
+        pathType: Prefix
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: plane-minio
+  namespace: plane
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    cert-manager.io/cluster-issuer: "letsencrypt-dns01"
+spec:
+  tls:
+  - hosts:
+    - plane-minio.doki.life        # 替换为您的域名。
+    secretName:  plane-minio-tls
+  rules:
+  - host: plane-minio.doki.life    # 替换为您的域名。
+    http:
+      paths:
+      - path: /
+        backend:
+          service:
+            name: plane-minio  # 替换为您的后端服务名。
+            port:
+              number: 9090  # 替换为您的服务端口。
+        pathType: Prefix

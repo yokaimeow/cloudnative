@@ -1,0 +1,21 @@
+planeVersion: stable
+
+ingress:
+  enabled: false
+  appHost: "plane.doki.life"
+  minioHost: "plane-minio.doki.life"
+  ingressClass: "nginx"
+  ingress_annotations: {
+    "nginx.ingress.kubernetes.io/proxy-body-size": "5m",
+  }
+
+redis:
+  storageClass: nfs-client
+
+postgres:
+  storageClass: nfs-client
+  volumeSize: 100Gi
+
+minio:
+  storageClass: nfs-client
+  volumeSize: 100Gi
