@@ -73,6 +73,15 @@ yum install -y containerd.io
 mkdir -p /etc/containerd
 containerd config default | sudo tee /etc/containerd/config.toml
 
+mkdir -p /etc/containerd/certs.d/docker.io
+
+cat <<EOF | sudo tee /etc/containerd/certs.d/docker.io/hosts.toml
+server = "https://docker.io"
+
+[host."https://registry-1.docker.io"]
+  capabilities = ["pull", "resolve"]
+EOF
+
 # 修改cgroup Driver为systemd
 sed -ri 's#SystemdCgroup = false#SystemdCgroup = true#' /etc/containerd/config.toml
 
