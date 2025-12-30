@@ -6,7 +6,8 @@ kubeadm upgrade plan
 
 kubeadm config images pull
 
-kubeadm upgrade apply v1.34.1
+# 使用了 Cilium KubeProxyReplacement 以支持 Gateway API
+kubeadm upgrade apply v1.34.3 --skip-phases=addon/kube-proxy
 
 #other controler node exec
 kubeadm config images pull
@@ -16,7 +17,7 @@ kubeadm upgrade node
 kubectl get nodes -o wide
 
 # 一台一台来操作
-VERSION="1.34.1"
+VERSION="1.34.3"
 
 kubectl drain k8s-master1.doki.life --ignore-daemonsets
 
@@ -34,7 +35,7 @@ kubectl get nodes -o wide
 
 # ---
 
-VERSION="1.34.1"
+VERSION="1.34.3"
 
 kubectl drain k8s-master2.doki.life --ignore-daemonsets
 
@@ -52,7 +53,7 @@ kubectl get nodes -o wide
 
 # ---
 
-VERSION="1.34.1"
+VERSION="1.34.3"
 
 kubectl drain k8s-master3.doki.life --ignore-daemonsets
 
