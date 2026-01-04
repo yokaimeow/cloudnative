@@ -24,7 +24,7 @@ swapoff -a  # 临时关闭
 sed -i 's/.*swap.*/#&/g' /etc/fstab
 
 #安装应用
-yum install -y lvm2 vim wget
+yum install -y lvm2 vim wget nfs-utils
 
 #加载IPVS模块
 yum -y install ipset ipvsadm
@@ -66,7 +66,8 @@ EOF
 
 sysctl --system
 
-wget https://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo -O /etc/yum.repos.d/docker-ce.repo
+dnf -y install dnf-plugins-core
+dnf config-manager --add-repo https://download.docker.com/linux/rhel/docker-ce.repo
 
 yum install -y containerd.io
 
@@ -76,9 +77,9 @@ containerd config default | sudo tee /etc/containerd/config.toml
 mkdir -p /etc/containerd/certs.d/docker.io
 
 cat <<EOF | sudo tee /etc/containerd/certs.d/docker.io/hosts.toml
-server = "https://docker.io"
+server = "https://registry-1.docker.io"
 
-[host."https://registry-1.docker.io"]
+[host."https://docker.m.daocloud.io"]
   capabilities = ["pull", "resolve"]
 EOF
 
@@ -93,10 +94,10 @@ systemctl enable containerd --now
 cat <<EOF | sudo tee /etc/yum.repos.d/kubernetes.repo
 [kubernetes]
 name=Kubernetes
-baseurl=https://pkgs.k8s.io/core:/stable:/v1.30/rpm/
+baseurl=https://pkgs.k8s.io/core:/stable:/v1.34/rpm/
 enabled=1
 gpgcheck=1
-gpgkey=https://pkgs.k8s.io/core:/stable:/v1.30/rpm/repodata/repomd.xml.key
+gpgkey=https://pkgs.k8s.io/core:/stable:/v1.34/rpm/repodata/repomd.xml.key
 exclude=kubelet kubeadm kubectl cri-tools kubernetes-cni
 EOF
 
