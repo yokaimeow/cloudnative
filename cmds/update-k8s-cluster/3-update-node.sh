@@ -4,7 +4,7 @@
 kubeadm upgrade node
 
 # 一台一台来操作
-VERSION="1.34.5"
+VERSION="1.34.9"
 
 # exec in controller
 kubectl drain k8s-work1.doki.life --ignore-daemonsets
@@ -24,7 +24,7 @@ kubectl get nodes -o wide
 
 # ---
 
-VERSION="1.34.5"
+VERSION="1.34.9"
 
 kubectl drain k8s-work2.doki.life --ignore-daemonsets
 
@@ -42,7 +42,7 @@ kubectl get nodes -o wide
 
 # ---
 
-VERSION="1.34.5"
+VERSION="1.34.9"
 
 kubectl drain k8s-work3.doki.life --ignore-daemonsets
 
